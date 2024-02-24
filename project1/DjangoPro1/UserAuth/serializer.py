@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from .models import Profile
-
+from rest_framework.authtoken.models import Token
 class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
@@ -21,3 +21,8 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         if profile_data:
             Profile.objects.create(user=user, **profile_data)
         return user
+
+class TokenSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Token
+        fields = ('key', 'access_token')  # Assuming you only want to return the key field

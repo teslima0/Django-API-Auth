@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'myapp1',
     'rest_framework',
     'UserAuth',
+    'rest_framework.authtoken',
 ]
 
 MIDDLEWARE = [

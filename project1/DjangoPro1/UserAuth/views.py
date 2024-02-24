@@ -2,7 +2,7 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework import status
 from django.contrib.auth.models import User
-from .serializer import UserRegistrationSerializer
+from .serializer import UserRegistrationSerializer, TokenSerializer
 from rest_framework.authtoken.models import Token
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from django.contrib.auth import authenticate
@@ -28,7 +28,6 @@ def register_user(request):
 #==========================login/logout===========================================
 
 
-
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def login_user(request):
@@ -38,8 +37,8 @@ def login_user(request):
         if username and password:
             user = authenticate(request, username=username, password=password)
             if user:
-                token, _ = Token.objects.get_or_create(user=user)
-                return Response({'token': token.key})
+                token, created = Token.objects.get_or_create(user=user)
+                return Response({'access_token': token})  # Return access token object
         return Response({'error': 'Invalid credentials'}, status=400)
 
 @api_view(['POST'])
